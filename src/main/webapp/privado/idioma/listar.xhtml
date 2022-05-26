@@ -1,0 +1,87 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <ui:composition template="/templates/template.xhtml">
+        <ui:define name="titulo">
+            CRUD de Idiomas
+        </ui:define>
+        <ui:define name="conteudo">
+            <h:form id="formListagem" prependId="false">
+                <p:growl/>
+                <p:commandButton value="Novo" actionListener="#{controleIdioma.novo()}"
+                    icon="pi pi-plus" update="formEdicao" process="@this"
+                    oncomplete="PF('dlg').show();"
+                    style="margin: 20px;"
+                />
+                
+                <p:dataTable value="#{controleIdioma.dao.listaObjetos}" var="obj" id="listagem">
+                    <p:column headerText="ID">
+                        <p:outputLabel value="#{obj.id}" />
+                    </p:column>
+                    <p:column headerText="Nome">
+                        <p:outputLabel value="#{obj.nome}" />
+                    </p:column>
+                    <p:column headerText="Sigla">
+                        <p:outputLabel value="#{obj.sigla}" />
+                    </p:column>
+                    <p:column headerText="Ações">
+                        <div>
+                            <p:commandButton
+                                actionListener="#{controleIdioma.alterar(obj.id)}"
+                                icon="pi pi-pencil"
+                                title="Editar o objeto de id: #{obj.id}"
+                                update="formEdicao" process="@this"
+                                oncomplete="PF('dlg').show();"
+                                style="margin-right: 10px;"
+                            />
+                            <p:commandButton
+                                actionListener="#{controleIdioma.excluir(obj.id)}"
+                                icon="pi pi-trash"
+                                title="Remover o objeto de id: #{obj.id}"
+                                update="@form" process="@this"
+                                oncomplete="if(!confirm('Deseja remover o objeto de id: #{obj.id}'));"
+                            />
+                        </div>
+                    </p:column>
+                </p:dataTable>
+            </h:form>
+            <p:dialog header="Edição" widgetVar="dlg" resizable="false" modal="true" width="50%" height="100%">
+                <h:form id="formEdicao" prependId="false">
+                    <p:growl id="growl">
+                        <div align="center">
+                            <p:panelGrid columns="2">
+                                <p:outputLabel value="ID" for="txtId" />
+                                <p:inputText value="#{controleIdioma.objeto.id}"
+                                    readonly="true" size="5" id="txtId"
+                                />
+                                <p:outputLabel value="Nome" for="txtNome" />
+                                <p:inputText value="#{controleIdioma.objeto.nome}"
+                                    size="40" maxlength="40" id="txtNome"
+                                />
+                                <p:outputLabel value="Sigla" for="txtSigla" />
+                                <p:inputText value="#{controleIdioma.objeto.sigla}"
+                                    size="5" maxlength="5" id="txtSigla"
+                                />
+                            </p:panelGrid>
+                        </div>
+                        <p:panel>
+                            <div align="center">
+                                <p:commandButton
+                                    value="Salvar"
+                                    icon="pi pi-save"
+                                    actionListener="#{controleIdioma.salvar()}"
+                                    update="formEdicao formListagem"
+                                    oncomplete="if(!args.validationFailed) {PF('dlg').hide();}"
+                                />
+                            </div>
+                        </p:panel>
+                    </p:growl>
+                </h:form>
+            </p:dialog>
+        </ui:define>
+    </ui:composition>
+</html>
+

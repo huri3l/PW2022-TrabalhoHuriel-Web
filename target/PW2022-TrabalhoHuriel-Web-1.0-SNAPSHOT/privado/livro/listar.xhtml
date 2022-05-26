@@ -1,0 +1,203 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:composition template="/templates/template.xhtml">
+        <ui:define name="titulo">
+            CRUD de Livros           
+        </ui:define>
+        <ui:define name="conteudo">
+            <h:form id="formListagem" prependId="false">
+                <p:growl/>
+                <p:commandButton value="Novo" actionListener="#{controleLivro.novo()}"
+                    icon="pi pi-plus" update="formEdicao" process="@this"
+                    oncomplete="PF('dlg').show();"
+                    style="margin: 20px;"
+                />
+            
+                <p:dataTable value="#{controleLivro.dao.listaObjetos}" var="obj" id="listagem">
+                    <p:column headerText="ISBN">
+                        <p:outputLabel value="#{obj.ISBN}" />
+                    </p:column>
+                    <p:column headerText="Título">
+                        <p:outputLabel value="#{obj.titulo}" />
+                    </p:column>
+                    <p:column headerText="Resumo">
+                        <p:outputLabel value="#{obj.resumo}" />
+                    </p:column>
+                    <p:column headerText="Editora">
+                        <p:outputLabel value="#{obj.editora}" />
+                    </p:column>
+                    <p:column headerText="Data de Publicação">
+                        <p:outputLabel value="#{obj.dataPublicacao}">
+                            <f:converter converterId="converterCalendar"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column headerText="Data de Cadastro">
+                        <p:outputLabel value="#{obj.dataCadastro}" >
+                            <f:converter converterId="converterCalendar"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column headerText="Ativo">
+                        <p:outputLabel value="#{obj.ativo}">
+                            <f:converter converterId="converterAtivo" />
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column headerText="Número de Páginas">
+                        <p:outputLabel value="#{obj.numeroPaginas}" />
+                    </p:column>
+                    <p:column headerText="Valor">
+                        <p:outputLabel value="#{obj.valor}" />
+                    </p:column>
+                    <p:column headerText="Código de Barras">
+                        <p:outputLabel value="#{obj.codigoBarras}" />
+                    </p:column>
+                    <p:column headerText="Catálogo">
+                        <p:outputLabel value="#{obj.catalogo.nome}" />
+                    </p:column>
+                    <p:column headerText="Formato">
+                        <p:outputLabel value="#{obj.formato.nome}" />
+                    </p:column>
+                    <p:column headerText="Idioma">
+                        <p:outputLabel value="#{obj.idioma.nome}" />
+                    </p:column>
+                    <p:column headerText="Ações">
+                        <div align="center">
+                            <p:commandButton 
+                                actionListener="#{controleLivro.alterar(obj.ISBN)}" 
+                                icon="pi pi-pencil"
+                                title="Editar o objeto de ISBN: #{obj.ISBN}"
+                                update="formEdicao" process="@this"
+                                oncomplete="PF('dlg').show();"
+                                style="margin-right: 10px;"
+                            />
+                            <p:commandButton
+                                actionListener="#{controleLivro.excluir(obj.ISBN)}"
+                                icon="pi pi-trash"
+                                update="@form"
+                                process="@this"
+                                title="Remover o objeto de id: #{obj.ISBN}"
+                                onclick="if(!confirm('Deseja remover o objeto de id: #{obj.ISBN}'))"
+                            />
+                        </div>
+                    </p:column>
+                </p:dataTable>
+            </h:form>
+            <p:dialog header="Edição" widgetVar="dlg" resizable="false" modal="true" width="50%" height="100%">
+                <h:form id="formEdicao" prependId="false">
+                    <p:growl id="growl" />
+                    <div align="center">
+                        <p:panelGrid columns="4">
+                            <p:outputLabel value="ISBN" for="txtISBN" />
+                            <p:inputText value="#{controleLivro.objeto.ISBN}"
+                                size="40" id="txtISBN" maxlength="13" />
+                            
+                            <p:outputLabel value="Título" for="txtTitulo" />
+                            <p:inputText value="#{controleLivro.objeto.titulo}"
+                                size="40" maxlength="40" id="txtTitulo"
+                            />
+                            <p:outputLabel value="Resumo" for="txtResumo" />
+                            <p:inputTextarea value="#{controleLivro.objeto.resumo}"
+                                maxlength="300" id="txtResumo" rows="6" cols="42"
+                            />
+                            <p:outputLabel value="Editora" for="txtEditora" />
+                            <p:inputText value="#{controleLivro.objeto.editora}"
+                                size="40" maxlength="40" id="txtEditora"
+                            />
+                            <p:outputLabel value="Data de Publicação"
+                                for="txtDataPublicacao"
+                            />
+                            <p:calendar id="txtDataPublicacao" 
+                                value="#{controleLivro.objeto.dataPublicacao}"
+                                mask="true" pattern="dd/MM/yyyy" navigator="true" size="10"
+                            >
+                                <f:converter converterId="converterCalendar"/>
+                            </p:calendar>  
+                            <p:outputLabel value="Data de Cadastro"
+                                for="txtDataCadastro"
+                            />
+                            <p:calendar id="txtDataCadastro" 
+                                value="#{controleLivro.objeto.dataCadastro}"
+                                mask="true" pattern="dd/MM/yyyy" navigator="true" size="10"
+                            >
+                                <f:converter converterId="converterCalendar"/>
+                            </p:calendar>  
+                            <p:outputLabel value="Ativo (Sim ou Não)" for="txtAtivo" />
+                            <p:inputText value="#{controleLivro.objeto.ativo}"
+                                size="40" maxlength="3" id="txtAtivo"
+                            >
+                                <f:converter converterId="converterAtivo"/>
+                            </p:inputText>
+                            <p:outputLabel value="Número de Páginas" for="txtNumeroPaginas" />
+                            <p:inputText value="#{controleLivro.objeto.numeroPaginas}"
+                                size="40" maxlength="40" id="txtNumeroPaginas"
+                            />
+                            <p:outputLabel value="Valor" for="txtValor" />
+                            <p:inputText value="#{controleLivro.objeto.valor}"
+                                size="40" maxlength="6" id="txtValor"
+                            />
+                            <p:outputLabel value="Código de Barras" for="txtCodigoBarras" />
+                            <p:inputText value="#{controleLivro.objeto.codigoBarras}"
+                                size="40" maxlength="130" id="txtCodigoBarras"
+                            />
+                            <p:outputLabel value="Catálogo" for="selectCatalogo" />
+                            <p:selectOneMenu value="#{controleLivro.objeto.catalogo}"
+                                id="selectCatalogo"
+                                filter="true"
+                                filterMatchMode="startsWith"
+                            >
+                                <f:converter binding="#{converterCatalogo}" />
+                                <f:selectItem itemLabel="Selecione um registro"
+                                    noSelectionOption="true" />
+                                <f:selectItems value="#{controleLivro.daoCatalogo.listaObjetos}"
+                                    var="cat" itemLabel="#{cat.nome}"
+                                />
+                            </p:selectOneMenu>
+                            <p:outputLabel value="Formato" for="selectFormato" />
+                            <p:selectOneMenu value="#{controleLivro.objeto.formato}"
+                                id="selectFormato"
+                                filter="true"
+                                filterMatchMode="startsWith"
+                            >
+                                <f:converter binding="#{converterFormato}" />
+                                <f:selectItem itemLabel="Selecione um registro"
+                                    noSelectionOption="true" />
+                                <f:selectItems value="#{controleLivro.daoFormato.listaObjetos}"
+                                    var="for" itemLabel="#{for.nome}"
+                                />
+                            </p:selectOneMenu>
+                            <p:outputLabel value="Idioma" for="selectIdioma" />
+                            <p:selectOneMenu value="#{controleLivro.objeto.idioma}"
+                                id="selectIdioma"
+                                filter="true"
+                                filterMatchMode="startsWith"
+                            >
+                                <f:converter binding="#{converterIdioma}" />
+                                <f:selectItem itemLabel="Selecione um registro"
+                                    noSelectionOption="true" />
+                                <f:selectItems value="#{controleLivro.daoIdioma.listaObjetos}"
+                                    var="idi" itemLabel="#{idi.nome}"
+                                />
+                            </p:selectOneMenu>
+                        </p:panelGrid>
+                    </div>
+                    <p:panel>
+                        <div align="center">
+                            <p:commandButton
+                                value="Salvar"
+                                icon="pi pi-save"
+                                actionListener="#{controleLivro.salvar()}"
+                                update="formEdicao formListagem"
+                                oncomplete="if(!args.validationFailed){PF('dlg').hide();}"
+                            />
+                        </div>
+                    </p:panel>
+                </h:form>
+            </p:dialog>
+        </ui:define>
+    </ui:composition>
+</html>
+

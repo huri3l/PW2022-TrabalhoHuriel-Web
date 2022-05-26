@@ -1,0 +1,17 @@
+br\edu\ifsul\dao\LivrariaDAO.class
+br\edu\ifsul\dao\LivroDAO.class
+br\edu\ifsul\dao\DAOGenerico.class
+br\edu\ifsul\controle\ControleLivro.class
+br\edu\ifsul\converters\ConverterIdioma.class
+br\edu\ifsul\dao\CatalogoDAO.class
+br\edu\ifsul\util\Util.class
+br\edu\ifsul\converters\ConverterAtivo.class
+br\edu\ifsul\controle\ControleFormato.class
+br\edu\ifsul\controle\ControleAutor.class
+br\edu\ifsul\converters\ConverterCalendar.class
+br\edu\ifsul\converters\ConverterFormato.class
+br\edu\ifsul\dao\FormatoDAO.class
+br\edu\ifsul\controle\ControleIdioma.class
+br\edu\ifsul\dao\IdiomaDAO.class
+br\edu\ifsul\converters\ConverterCatalogo.class
+br\edu\ifsul\dao\AutorDAO.class
