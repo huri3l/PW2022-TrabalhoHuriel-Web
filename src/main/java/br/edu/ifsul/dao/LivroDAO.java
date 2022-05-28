@@ -14,8 +14,14 @@ import javax.ejb.Stateful;
  */
 @Stateful
 public class LivroDAO<TIPO> extends DAOGenerico<Livro> implements Serializable {
+
     public LivroDAO() {
         super();
         classePersistente = Livro.class;
+    }
+
+    public void remover(String id) throws Exception {
+        Livro obj = (Livro) em.find(classePersistente, id);
+        em.remove(obj);
     }
 }

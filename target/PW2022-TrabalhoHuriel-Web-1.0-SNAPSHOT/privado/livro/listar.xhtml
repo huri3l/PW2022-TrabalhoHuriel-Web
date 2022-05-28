@@ -80,7 +80,7 @@
                                 update="@form"
                                 process="@this"
                                 title="Remover o objeto de id: #{obj.ISBN}"
-                                onclick="if(!confirm('Deseja remover o objeto de id: #{obj.ISBN}'))"
+                                onclick="if(!confirm('Deseja remover o objeto de id: #{obj.ISBN}')) return false"
                             />
                         </div>
                     </p:column>
@@ -125,12 +125,8 @@
                             >
                                 <f:converter converterId="converterCalendar"/>
                             </p:calendar>  
-                            <p:outputLabel value="Ativo (Sim ou Não)" for="txtAtivo" />
-                            <p:inputText value="#{controleLivro.objeto.ativo}"
-                                size="40" maxlength="3" id="txtAtivo"
-                            >
-                                <f:converter converterId="converterAtivo"/>
-                            </p:inputText>
+                            <p:outputLabel value="Ativo (Sim ou Não)" for="txtAtivo" />                          
+                            <p:selectBooleanCheckbox value="#{controleLivro.objeto.ativo}" id="txtAtivo" itemLabel="Sim"/>
                             <p:outputLabel value="Número de Páginas" for="txtNumeroPaginas" />
                             <p:inputText value="#{controleLivro.objeto.numeroPaginas}"
                                 size="40" maxlength="40" id="txtNumeroPaginas"

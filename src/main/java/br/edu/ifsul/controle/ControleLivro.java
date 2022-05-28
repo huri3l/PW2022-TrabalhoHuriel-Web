@@ -58,10 +58,9 @@ public class ControleLivro implements Serializable {
         }
     }
     
-    public void excluir(Object id) {
+    public void excluir(String id) {
         try {
-            objeto = dao.getObjectByID(id);
-            dao.remove(objeto);
+            dao.remover(id);
             Util.mensagemInformacao("Objeto removido com sucesso!");
         } catch (Exception e) {
             Util.mensagemErro("Erro ao remover objeto: " + Util.getMensagemErro(e));

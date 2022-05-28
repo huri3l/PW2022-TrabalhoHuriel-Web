@@ -45,6 +45,7 @@ public class ControleAutor implements Serializable {
     
     public void excluir(Object id) {
         try {
+            System.out.println("ID do autor: " + id);
             objeto = dao.getObjectByID(id);
             dao.remove(objeto);
             Util.mensagemInformacao("Objeto removido com sucesso!");
