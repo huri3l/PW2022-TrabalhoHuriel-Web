@@ -4,7 +4,9 @@
  */
 package br.edu.ifsul.dao;
 
+import br.edu.ifsul.converters.ConverterOrdem;
 import br.edu.ifsul.modelo.Livraria;
+import br.edu.ifsul.util.Ordem;
 import java.io.Serializable;
 import javax.ejb.Stateful;
 
@@ -17,5 +19,13 @@ public class LivrariaDAO<TIPO> extends DAOGenerico<Livraria> implements Serializ
     public LivrariaDAO() {
         super();
         classePersistente = Livraria.class;
+        
+        listaOrdem.add(new Ordem("id", "ID", "="));
+        listaOrdem.add(new Ordem("nome", "Nome", "like"));
+        
+        ordemAtual = listaOrdem.get(1);
+        
+        converterOrdem = new ConverterOrdem();
+        converterOrdem.setListaOrdem(listaOrdem);
     }
 }

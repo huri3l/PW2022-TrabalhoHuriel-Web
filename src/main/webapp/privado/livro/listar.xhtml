@@ -12,13 +12,53 @@
         <ui:define name="conteudo">
             <h:form id="formListagem" prependId="false">
                 <p:growl/>
-                <p:commandButton value="Novo" actionListener="#{controleLivro.novo()}"
-                    icon="pi pi-plus" update="formEdicao" process="@this"
-                    oncomplete="PF('dlg').show();"
-                    style="margin: 20px;"
-                />
+                <div align="center">                    
+                    <p:panelGrid columns="12">
+                        <p:commandButton value="Novo" actionListener="#{controleLivro.novo()}"
+                                         update="formEdicao" process="@this" oncomplete="PF('dlg').show();"
+                                         />
+                        <p:outputLabel value="Ordem: "/>
+                        <p:selectOneMenu value="#{controleLivro.dao.ordemAtual}"
+                                         converter="#{controleLivro.dao.converterOrdem}">
+                            <f:selectItems value="#{controleLivro.dao.listaOrdem}"
+                                           var="ord" itemValue="#{ord.atributo}"/>
+                            <p:ajax update="listagem"/>
+                        </p:selectOneMenu>
+                        <p:outputLabel value="Filtro:"/>
+                        <p:inputText value="#{controleLivro.dao.filtro}">
+                            <p:ajax update="listagem" event="blur"/>
+                        </p:inputText>
+                        <p:commandButton value="Filtrar" update="listagem"/>
+                        <p:outputLabel value="Máximo de objetos:"/>
+                        <p:selectOneMenu value="#{controleLivro.dao.maximoObjetos}">
+                            <f:selectItem itemLabel="5" itemValue="5"/>
+                            <f:selectItem itemLabel="10" itemValue="10"/>
+                            <f:selectItem itemLabel="25" itemValue="25"/>
+                            <f:selectItem itemLabel="50" itemValue="50"/>
+                            <f:selectItem itemLabel="100" itemValue="100"/>
+                            <p:ajax update="listagem"/>
+                        </p:selectOneMenu>
+                        <p:commandButton action="#{controleLivro.dao.primeiro()}"
+                                         title="Primeiro" update="listagem"
+                                         icon="pi pi-step-backward"/>
+                        <p:commandButton action="#{controleLivro.dao.anterior()}"
+                                         title="Anterior" update="listagem"
+                                         icon="pi pi-chevron-left"/>  
+                        <p:commandButton action="#{controleLivro.dao.proximo()}"
+                                         title="Próximo" update="listagem"
+                                         icon="pi pi-chevron-right"/> 
+                        <p:commandButton action="#{controleLivro.dao.ultimo()}"
+                                         title="Ultimo" update="listagem"
+                                         icon="pi pi-step-forward"/>                        
+
+                    </p:panelGrid>
+                </div>
             
-                <p:dataTable value="#{controleLivro.dao.listaObjetos}" var="obj" id="listagem">
+                <p:dataTable value="#{controleLivro.dao.listaObjetos}" var="obj" id="listagem">     
+                    <f:facet name="footer">
+                        <p:outputLabel value="#{controleLivro.dao.mensagemNavegacao}"/>
+                    </f:facet>
+                    
                     <p:column headerText="ISBN">
                         <p:outputLabel value="#{obj.ISBN}" />
                     </p:column>
@@ -148,7 +188,7 @@
                                 <f:converter binding="#{converterCatalogo}" />
                                 <f:selectItem itemLabel="Selecione um registro"
                                     noSelectionOption="true" />
-                                <f:selectItems value="#{controleLivro.daoCatalogo.listaObjetos}"
+                                <f:selectItems value="#{controleLivro.daoCatalogo.listaTodos}"
                                     var="cat" itemLabel="#{cat.nome}"
                                 />
                             </p:selectOneMenu>
@@ -161,7 +201,7 @@
                                 <f:converter binding="#{converterFormato}" />
                                 <f:selectItem itemLabel="Selecione um registro"
                                     noSelectionOption="true" />
-                                <f:selectItems value="#{controleLivro.daoFormato.listaObjetos}"
+                                <f:selectItems value="#{controleLivro.daoFormato.listaTodos}"
                                     var="for" itemLabel="#{for.nome}"
                                 />
                             </p:selectOneMenu>
@@ -174,7 +214,7 @@
                                 <f:converter binding="#{converterIdioma}" />
                                 <f:selectItem itemLabel="Selecione um registro"
                                     noSelectionOption="true" />
-                                <f:selectItems value="#{controleLivro.daoIdioma.listaObjetos}"
+                                <f:selectItems value="#{controleLivro.daoIdioma.listaTodos}"
                                     var="idi" itemLabel="#{idi.nome}"
                                 />
                             </p:selectOneMenu>
