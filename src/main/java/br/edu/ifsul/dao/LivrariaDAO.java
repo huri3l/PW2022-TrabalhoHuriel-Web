@@ -28,4 +28,12 @@ public class LivrariaDAO<TIPO> extends DAOGenerico<Livraria> implements Serializ
         converterOrdem = new ConverterOrdem();
         converterOrdem.setListaOrdem(listaOrdem);
     }
+    
+    public Livraria getObjectByID(Object id) throws Exception {
+        Livraria obj = em.find(Livraria.class, id);
+        
+        obj.getCatalogos().size();
+        
+        return obj;
+    }
 }

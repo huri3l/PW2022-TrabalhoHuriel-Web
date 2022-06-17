@@ -1,0 +1,112 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <p:dialog header="Edição" widgetVar="dlg" resizable="false"
+              modal="true" width="50%" height="100%">
+        <h:form id="formEdicao" prependId="false">
+            <p:growl id="growl"/>
+            <p:tabView id="tab">
+                <p:tab title="Dados Principais">
+                    <div align="center">
+                        <p:panelGrid columns="2">
+                            <p:outputLabel value="ID"/>
+                            <p:inputText validator="#{controleLivraria.objeto.id}"
+                                         size="5" readonly="true"/>
+                            <p:outputLabel value="Nome" for="txtNome"/>
+                            <p:inputText id="txtNome" value="#{controleLivraria.objeto.nome}"
+                                         size="50" maxlength="50"
+                                         placeholder="Obrigatório"/>
+                            <p:outputLabel value="Nome" for="txtSite"/>
+                            <p:inputText id="txtSite" value="#{controleLivraria.objeto.site}"
+                                         size="50" maxlength="50"
+                                         placeholder="Obrigatório"/>                   
+                        </p:panelGrid>
+                    </div>                    
+                </p:tab>
+                <p:tab title="Catálogo">
+                    <p:dataTable value="#{controleLivraria.objeto.catalogos}"
+                                 var="catalogo" rowIndexVar="idxCatalogo"
+                                 id="listaCatalogos">
+                        <f:facet name="header">
+                            <p:commandButton value="Novo Catálogo"
+                                             actionListener="#{controleLivraria.novoCatalogo()}"
+                                             update=":formCatalogo"
+                                             icon="pi pi-plus"
+                                             process="@this"
+                                             oncomplete="PF('dlgCatalogo').show();"/>
+                        </f:facet>
+                        <p:column headerText="ID">
+                            <p:outputLabel value="#{catalogo.id}"/>
+                        </p:column>
+                        <p:column headerText="Nome">
+                            <p:outputLabel value="#{catalogo.nome}"/>
+                        </p:column>    
+                        <p:column headerText="Descrição">
+                            <p:outputLabel value="#{catalogo.descricao}"/>
+                        </p:column> 
+                        <p:column headerText="Ações">
+                            <div align="center">
+                                <p:commandButton 
+                                    actionListener="#{controleLivraria.alterarCatalogo(idxCatalogo)}"
+                                                 icon="pi pi-pencil"
+                                                 title="Editar"
+                                                 update=":formCatalogo"
+                                                 process="@this"
+                                                 oncomplete="PF('dlgCatalogo').show();"/>
+                                <p:commandButton 
+                                    actionListener="#{controleLivraria.removerCatalogo(idxCatalogo)}"
+                                                 icon="pi pi-trash"
+                                                 update="tab:listaCatalogos growl"
+                                                 process="@this"
+                                                 onclick="if (!confirm('Confirma a exclusão'))
+                                                         return false"/>
+                            </div>
+                        </p:column>                        
+                    </p:dataTable>
+                </p:tab>                      
+            </p:tabView>
+
+            <p:panel>
+                <div align="center">
+                    <p:commandButton value="Salvar"
+                                     icon="pi pi-save"
+                                     actionListener="#{controleLivraria.salvar()}"
+                                     update="formEdicao formListagem"
+                                     oncomplete="if (!args.validationFailed){PF('dlg').hide();}"/>
+                </div>
+            </p:panel>
+        </h:form>
+    </p:dialog>
+
+    <p:dialog header="Edição de Catálogo" widgetVar="dlgCatalogo" resizable="false"
+        modal="true">
+        <h:form id="formCatalogo">
+            <p:growl/>
+            <p:panelGrid columns="2">
+                <f:facet name="footer">
+                    <div align="center">
+                        <p:commandButton value="Salvar" icon="pi pi-save"
+                                         actionListener="#{controleLivraria.salvarCatalogo()}"
+                                         update="tab:listaCatalogos growl"
+                                         process="@form"
+                    oncomplete="if(!args.validationFailed){PF('dlgCatalogo').hide();}"/>                                         
+                    </div>
+                </f:facet>
+                <p:outputLabel value="ID"/>
+                <p:inputText value="#{controleLivraria.catalogo.id}" readonly="true"/>
+                <p:outputLabel value="Nome" for="txtNomeCatalogo"/>
+                <p:inputText id="txtNomeCatalogo" value="#{controleLivraria.catalogo.nome}"
+                             placeholder="Obrigatório"
+                             size="50" maxlength="50"/>
+                <p:outputLabel value="Descrição" for="txtDescricaoCatalogo"/>
+                <p:inputText id="txtDescricaoCatalogo" value="#{controleLivraria.catalogo.descricao}"
+                             placeholder="Obrigatório"
+                             size="50" maxlength="50"/>
+            </p:panelGrid>
+        </h:form>
+        <ui:include src="/templates/ajaxstatus.xhtml"/>
+    </p:dialog>
+</html>
+

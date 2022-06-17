@@ -2,6 +2,7 @@ br\edu\ifsul\dao\LivrariaDAO.class
 br\edu\ifsul\dao\LivroDAO.class
 br\edu\ifsul\util\Ordem.class
 br\edu\ifsul\dao\DAOGenerico.class
+br\edu\ifsul\controle\ControleLivraria.class
 br\edu\ifsul\controle\ControleLivro.class
 br\edu\ifsul\converters\ConverterIdioma.class
 br\edu\ifsul\dao\CatalogoDAO.class
