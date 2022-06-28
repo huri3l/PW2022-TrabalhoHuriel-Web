@@ -4,7 +4,9 @@ import br.edu.ifsul.dao.LivrariaDAO;
 import br.edu.ifsul.modelo.Catalogo;
 import br.edu.ifsul.modelo.Livraria;
 import br.edu.ifsul.util.Util;
+import br.edu.ifsul.util.UtilRelatorios;
 import java.io.Serializable;
+import java.util.HashMap;
 import javax.ejb.EJB;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
@@ -27,6 +29,11 @@ public class ControleLivraria implements Serializable {
 
     public ControleLivraria(){
 
+    }
+    
+    public void imprimeLivrarias() {
+        HashMap parametros = new HashMap();
+        UtilRelatorios.imprimeRelatorio("relatorio_livrarias", parametros, dao.getListaTodos());
     }
 
     public void novoCatalogo(){

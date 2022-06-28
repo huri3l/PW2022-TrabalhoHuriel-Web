@@ -6,6 +6,7 @@ br\edu\ifsul\controle\ControleLivraria.class
 br\edu\ifsul\controle\ControleLivro.class
 br\edu\ifsul\converters\ConverterIdioma.class
 br\edu\ifsul\dao\CatalogoDAO.class
+br\edu\ifsul\util\UtilRelatorios.class
 br\edu\ifsul\util\Util.class
 br\edu\ifsul\converters\ConverterOrdem.class
 br\edu\ifsul\converters\ConverterAtivo.class

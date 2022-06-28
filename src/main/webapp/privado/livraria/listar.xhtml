@@ -11,13 +11,18 @@
             <h:form id="formListagem" prependId="false">
                 <p:growl/>
             <div align="center">
-                    <p:panelGrid columns="12">
+                    <p:panelGrid columns="13">
                         <p:commandButton value="Novo"
                                          actionListener="#{controleLivraria.novo()}"
                                          icon="pi pi-plus"
                                          update="formEdicao"
                                          process="@this"
                                          oncomplete="PF('dlg').show();"/>
+                        <p:commandButton value="Imprimir"
+                                         icon="pi pi-print"
+                                         action="#{controleLivraria.imprimeLivrarias()}"
+                                         ajax="false"
+                                         onclick="this.form.target = '_blank';"/>
                         <p:outputLabel value="Ordem:"/>
                         <p:selectOneMenu value="#{controleLivraria.dao.ordemAtual}"
                                          converter="#{controleLivraria.dao.converterOrdem}">
